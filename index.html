@@ -1,11 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
     <title>Document</title>
-</head>
-<body>
-    
-</body>
+  </head>
+  <body>
+    <header>
+      <img src="./images/jeex.svg" title="JEEX" type="image/svg+xml" alt="JEEX" class="logoHeader">
+    </header>
+    <section id="container">
+      <h2 class="title">Conversor of coins</h2>
+      <form action="" id="form-convert">
+        <div class="input-group">
+          <label for="input-convert" id="label-convert" class="label">Enter an amount</label>
+          <input type="number" required id="input-convert" class="input" />
+        </div>
+        <div class="input-group">
+          <label for="currency-convert" id="label-inicial-currency" class="label">Traditional Currency</label>
+          <select id="sel-traditional-currency" class="input" aria-label="Default select example" required>
+            <option value="" selected disabled hidden>Choose a currency</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="currency-convert" id="label-final-currency" class="label">Crypto currency</label>
+          <select id="sel-crypto-currency" class="input" aria-label="Default select example" required></select>
+        </div>
+        <div class="input-group">
+          <label for="currency-convert" id="date-convert" class="label">Enter a date</label>
+          <input name="date" id="date-input" class="input" type="date"></input>
+        </div>
+        <button class="btn btn-primary" id="btn-convert">Convert</button>
+      </form>
+      <h2 id="price-result" class="price"></h2>
+    </section>
+
+    <script src="./js/index.js" type="module"></script>
+  </body>
 </html>

@@ -1,0 +1,70 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+:root{
+    --backgroundColor: #090A03;
+    --color: white;
+    --primaryColor: #95C11F;
+    --secondaryColor: #D60B52;
+}
+
+@font-face {
+    font-family: titleFont;
+    src: url(../fonts/Panchang-Extrabold.woff2) format("woff2");
+}
+@font-face {
+    font-family: subtitleFont;
+    src: url(../fonts/Panchang-Medium.woff2) format("woff2");
+}
+@font-face {
+    font-family: textFont;
+    src: url(../fonts/Panchang-Light.woff2) format("woff2");
+}
+
+body{
+    background-color: var(--backgroundColor);
+    font-family: 'Open Sans', sans-serif;
+    width: 80%;
+    margin: auto;
+    color: var(--color);
+}
+header{
+    display: flex;
+    align-items: center;
+    padding-block: 1.5em;
+    position: fixed;
+    width: 100%;
+}
+.logoHeader{
+    width: 6.5rem;
+}
+#container{
+    padding-top: 4.5em;
+}
+.title{
+    font-size: 1.4rem;
+    font-family: titleFont;
+    margin-bottom: 0.5em;
+}
+.input-group{
+    display: flex;
+    flex-direction: column;
+    padding-block: 0.75em;
+}
+.label{
+    font-size: 1rem;
+    font-family: subtitleFont;
+}
+.input{
+    font-size: 1rem;
+    font-family: textFont;
+    background: none;
+    color: var(--color);
+    padding-block: 0.5rem;
+    border: 1px solid var(--primaryColor);
+}
