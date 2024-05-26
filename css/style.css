@@ -68,3 +68,7 @@ header{
     padding-block: 0.5rem;
     border: 1px solid var(--primaryColor);
 }
+option {
+    background-color: #090A03;
+
+}
