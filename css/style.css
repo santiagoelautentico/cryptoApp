@@ -68,3 +68,36 @@ header{
     padding-block: 0.5rem;
     border: 1px solid var(--primaryColor);
 }
+
+.date{
+    font-size: 1rem;
+    z-index: 1;
+    font-family: textFont;
+    color: var(--color);
+    padding-block: 0.5rem;
+    border: 1px solid var(--primaryColor);
+}
+input[type="date"] {
+    background: transparent url(../images/Sort\ by\ date.png);
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position: 98%;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+}
+select{
+    font-size: 1rem;
+    font-family: textFont;
+    background: none;
+    color: var(--color);
+    padding-block: 0.5rem;
+    border: 1px solid var(--primaryColor);
+}
+
+select option:nth-of-type(2n) {
+    background-color: black;
+}
+select option:nth-of-type(2n+1) {
+    background-color: rgb(12, 12, 12);
+}
