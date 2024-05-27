@@ -83,9 +83,7 @@ function eventSubmitForm(event) {
   console.log(data);
   convertCurrencyToDolars(data);
   console.log(data.date);
-  rangeHistoricallyUsdToCurrency(data, listHistoricalCurrency);
-  rageHistoricalCryptoToUsd(data, listHistoricalCrypto);
-  getGraphicalData(data, listHistoricalCurrency, listHistoricalCrypto);
+  getListAndGraphicalData(data, listHistoricalCrypto, listHistoricalCurrency);
 }
 
 function convertCurrencyToDolars(data) {
@@ -122,59 +120,58 @@ function calcularFechaFinal(date) {
   return formatDate(dateObj);
 }
 
-function rangeHistoricallyUsdToCurrency(data, listHistoricalCurrency) {
+
+function getListAndGraphicalData(data, listHistoricalCrypto, listHistoricalCurrency) {
   const finalDate = calcularFechaFinal(data.date);
-  fetch(
-    `https://api.frankfurter.app/${finalDate}..${data.date}?from=${data.from}&to=USD`
-  )
+  console.log(finalDate, "finalDate");
+  fetch(`https://api.frankfurter.app/${finalDate}..${data.date}?from=${data.from}&to=USD`)
     .then((res) => res.json())
     .then((resDate) => {
-      console.log(resDate.rates, "resDate");
+      console.log(resDate.rates, "resDate Json");
       listHistoricalCurrency = resDate.rates;
-      console.log(listHistoricalCurrency, "next");
+      console.log(listHistoricalCurrency, "lista de dolares en periodo");
     });
-}
-
-function rageHistoricalCryptoToUsd(data, listHistoricalCrypto) {
-  console.log(data, "data crypto");
-  const finalDate = calcularFechaFinal(data.date);
-  console.log(finalDate, "finalDateCrypto");
+  
   fetch(`https://api.coinpaprika.com/v1/tickers/${data.to}/historical?interval=1d&start=${finalDate}&end=${data.date}`)
     .then((res) => res.json())
     .then((resDate) => {
-      console.log(resDate, "resDateCrypto");
+      console.log(resDate, "resDate Crypto");
       listHistoricalCrypto = resDate;
-      console.log(listHistoricalCrypto, "next2");
+      console.log(listHistoricalCrypto, "lista de valores de criptomonedas periodo listHistoricalCrypto");
     });
+  
+  
+  
 }
 
-function getGraphicalData(data, listHistoricalCurrency, listHistoricalCrypto) {
-  console.log(data, "data", listHistoricalCurrency, "listHistoricalCurrency", listHistoricalCrypto, "listHistoricalCrypto");
-}
-
-// document.querySelector("#form-convert").addEventListener("submit", (event) => {
-//   event.preventDefault();
-
-//   const convertTraditionalToDolars = {};
-
+// function rangeHistoricallyUsdToCurrency(data, listHistoricalCurrency) {
+//   const finalDate = calcularFechaFinal(data.date);
 //   fetch(
-//     `https://api.getgeoapi.com/v2/currency/convert?${API_KEY}&from=${convertTraditionalToDolars.from}&to=USD&amount=${convertTraditionalToDolars.amount}`
+//     `https://api.frankfurter.app/${finalDate}..${data.date}?from=${data.from}&to=USD`
 //   )
 //     .then((res) => res.json())
-//     .then((data) => {
-//       console.log(data.rates.USD.rate_for_amount, "traditional to dolars");
-//       const convertDolarsToCrypto = {
-//         quote_currency_id: document.querySelector("#sel-crypto-currency").value,
-//         amount: data.rates.USD.rate_for_amount,
-//       };
-//       fetch(
-//         `${CONVERT_DOLARS_CRYPTO}quote_currency_id=${convertDolarsToCrypto.quote_currency_id}&amount=${convertDolarsToCrypto.amount}`
-//       )
-//         .then((res) => res.json())
-//         .then((crypto_converted) => {
-//           console.log(crypto_converted, "dolars to crypto");
-//           document.querySelector("#price-result").innerHTML =
-//             crypto_converted.price.toFixed(2);
-//         });
+//     .then((resDate) => {
+//       console.log(resDate.rates, "resDate");
+//       listHistoricalCurrency = resDate.rates;
+//       console.log(listHistoricalCurrency, "next");
 //     });
-// });
+// }
+
+// function rageHistoricalCryptoToUsd(data, listHistoricalCrypto) {
+//   console.log(data, "data crypto");
+//   const finalDate = calcularFechaFinal(data.date);
+//   console.log(finalDate, "finalDateCrypto");
+//   fetch(`https://api.coinpaprika.com/v1/tickers/${data.to}/historical?interval=1d&start=${finalDate}&end=${data.date}`)
+//     .then((res) => res.json())
+//     .then((resDate) => {
+//       console.log(resDate, "resDateCrypto");
+//       listHistoricalCrypto = resDate;
+//       console.log(listHistoricalCrypto, "next2");
+//     });
+// }
+
+// function getGraphicalData(data, listHistoricalCurrency, listHistoricalCrypto) {
+//   console.log(data, "data", listHistoricalCurrency, "listHistoricalCurrency", listHistoricalCrypto, "listHistoricalCrypto");
+// }
+
+
