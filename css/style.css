@@ -1,103 +1,130 @@
 * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    text-decoration: none;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-decoration: none;
 }
 
-:root{
-    --backgroundColor: #090A03;
-    --color: white;
-    --primaryColor: #95C11F;
-    --secondaryColor: #D60B52;
+:root {
+  --backgroundColor: #090a03;
+  --color: white;
+  --primaryColor: #95c11f;
+  --secondaryColor: #d60b52;
 }
 
 @font-face {
-    font-family: titleFont;
-    src: url(../fonts/Panchang-Extrabold.woff2) format("woff2");
+  font-family: titleFont;
+  src: url(../fonts/Panchang-Extrabold.woff2) format("woff2");
 }
 @font-face {
-    font-family: subtitleFont;
-    src: url(../fonts/Panchang-Medium.woff2) format("woff2");
+  font-family: subtitleFont;
+  src: url(../fonts/Panchang-Medium.woff2) format("woff2");
 }
 @font-face {
-    font-family: textFont;
-    src: url(../fonts/Panchang-Light.woff2) format("woff2");
+  font-family: textFont;
+  src: url(../fonts/Panchang-Light.woff2) format("woff2");
 }
 
-body{
-    background-color: var(--backgroundColor);
-    font-family: 'Open Sans', sans-serif;
-    width: 80%;
-    margin: auto;
-    color: var(--color);
+body {
+  background-color: var(--backgroundColor);
+  font-family: "Open Sans", sans-serif;
+  width: 80%;
+  margin: auto;
+  color: var(--color);
 }
-header{
-    display: flex;
-    align-items: center;
-    padding-block: 1.5em;
-    position: fixed;
-    width: 100%;
+header {
+  display: flex;
+  align-items: center;
+  padding-block: 1.5em;
+  position: fixed;
+  width: 100%;
 }
-.logoHeader{
-    width: 6.5rem;
+.logoHeader {
+  width: 6.5rem;
 }
-#container{
-    padding-top: 4.5em;
+#container {
+  padding-top: 4.5em;
 }
-.title{
-    font-size: 1.4rem;
-    font-family: titleFont;
-    margin-bottom: 0.5em;
+.title {
+  font-size: 1.4rem;
+  font-family: titleFont;
+  margin-bottom: 0.5em;
 }
-.input-group{
-    display: flex;
-    flex-direction: column;
-    padding-block: 0.75em;
+.input-group {
+  display: flex;
+  flex-direction: column;
+  padding-block: 0.75em;
 }
-.label{
-    font-size: 1rem;
-    font-family: subtitleFont;
+.label {
+  font-size: 1rem;
+  font-family: subtitleFont;
 }
-.input{
-    font-size: 1rem;
-    font-family: textFont;
-    background: none;
-    color: var(--color);
-    padding-block: 0.5rem;
-    border: 1px solid var(--primaryColor);
+.input {
+  font-size: 1rem;
+  font-family: textFont;
+  background: none;
+  color: var(--color);
+  padding-block: 0.5rem;
+  border: 1px solid var(--primaryColor);
 }
 
-.date{
-    font-size: 1rem;
-    z-index: 1;
-    font-family: textFont;
-    color: var(--color);
-    padding-block: 0.5rem;
-    border: 1px solid var(--primaryColor);
+.date {
+  font-size: 1rem;
+  z-index: 1;
+  font-family: textFont;
+  color: var(--color);
+  padding-block: 0.5rem;
+  border: 1px solid var(--primaryColor);
 }
 input[type="date"] {
-    background: transparent url(../images/Sort\ by\ date.png);
-    background-size: 30px;
-    background-repeat: no-repeat;
-    background-position: 98%;
+  background: transparent url(../images/Sort\ by\ date.png);
+  background-size: 30px;
+  background-repeat: no-repeat;
+  background-position: 98%;
 }
 input[type="date"]::-webkit-calendar-picker-indicator {
-    opacity: 0;
+  opacity: 0;
 }
-select{
-    font-size: 1rem;
-    font-family: textFont;
-    background: none;
-    color: var(--color);
-    padding-block: 0.5rem;
-    border: 1px solid var(--primaryColor);
+select {
+  font-size: 1rem;
+  font-family: textFont;
+  background: none;
+  color: var(--color);
+  padding-block: 0.5rem;
+  border: 1px solid var(--primaryColor);
 }
 
 select option:nth-of-type(2n) {
-    background-color: black;
+  background-color: black;
 }
-select option:nth-of-type(2n+1) {
-    background-color: rgb(12, 12, 12);
+select option:nth-of-type(2n + 1) {
+  background-color: rgb(12, 12, 12);
+}
+
+.btn-primary {
+  padding: 0.75rem 1rem;
+  margin-top: 0.75em;
+  font-size: 1rem;
+  font-family: subtitlefont;
+  background-color: var(--primaryColor);
+  color: white;
+  border: none;
+  box-shadow: inset -2px -3px 2px -0.5px #628408, inset 2px 2px 2px #c7f940,
+    4px 4px 10px #81ae0684;
+}
+.btn-primary:hover {
+  border: 3px solid #7aa40c;
+  /* background-color: #82a918; */
+}
+
+input:hover {
+  box-shadow: none;
+}
+select option {
+  background-color: rgb(45, 45, 45);
+  width: 10px;
+}
+select option:nth-of-type(2n) {
+  background-color: rgb(29, 29, 29);
 }

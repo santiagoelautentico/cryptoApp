@@ -15,6 +15,9 @@ import {
 //       amount: document.querySelector("#inp-monto").value,
 //       };
 
+let arrayHistoricalCurrency = [];
+let arrayHistoricalCrypto = [];
+
 function formatDate(dateObj) {
   return dateObj.toISOString().split("T")[0];
 }
@@ -78,12 +81,9 @@ function getDateFromForm() {
 function eventSubmitForm(event) {
   event.preventDefault();
   const data = getDateFromForm();
-  var listHistoricalCurrency = '';
-  var listHistoricalCrypto = '';
-  console.log(data);
   convertCurrencyToDolars(data);
-  console.log(data.date);
-  getListAndGraphicalData(data, listHistoricalCrypto, listHistoricalCurrency);
+  getListAndGraphicalData(data);
+  getGraphic(data, arrayHistoricalCurrency, arrayHistoricalCrypto);
 }
 
 function convertCurrencyToDolars(data) {
@@ -92,7 +92,6 @@ function convertCurrencyToDolars(data) {
   )
     .then((res) => res.json())
     .then((resAmount) => {
-      console.log(resAmount.rates.USD.rate_for_amount, "traditional to dolars");
       const convertDolarsToCrypto = {
         quote_currency_id: document.querySelector("#sel-crypto-currency").value,
         amount: resAmount.rates.USD.rate_for_amount,
@@ -102,7 +101,6 @@ function convertCurrencyToDolars(data) {
       )
         .then((res) => res.json())
         .then((crypto_converted) => {
-          console.log(crypto_converted, "dolars to crypto");
           document.querySelector("#price-result").innerHTML =
             crypto_converted.price.toFixed(2);
         });
@@ -120,27 +118,60 @@ function calcularFechaFinal(date) {
   return formatDate(dateObj);
 }
 
-
-function getListAndGraphicalData(data, listHistoricalCrypto, listHistoricalCurrency) {
+function getListAndGraphicalData(data) {
   const finalDate = calcularFechaFinal(data.date);
   console.log(finalDate, "finalDate");
-  fetch(`https://api.frankfurter.app/${finalDate}..${data.date}?from=${data.from}&to=USD`)
+  fetch(
+    `https://api.frankfurter.app/${finalDate}..${data.date}?from=${data.from}&to=USD`
+  )
     .then((res) => res.json())
     .then((resDate) => {
-      console.log(resDate.rates, "resDate Json");
-      listHistoricalCurrency = resDate.rates;
-      console.log(listHistoricalCurrency, "lista de dolares en periodo");
+      console.log(resDate.rates, "resDate currency list");
+      arrayHistoricalCrypto = resDate.rates;
+      getGraphic(arrayHistoricalCrypto, arrayHistoricalCurrency);
     });
-  
-  fetch(`https://api.coinpaprika.com/v1/tickers/${data.to}/historical?interval=1d&start=${finalDate}&end=${data.date}`)
+  fetch(
+    `https://api.coinpaprika.com/v1/tickers/${data.to}/historical?interval=1d&start=${finalDate}&end=${data.date}`
+  )
     .then((res) => res.json())
     .then((resDate) => {
-      console.log(resDate, "resDate Crypto");
-      listHistoricalCrypto = resDate;
-      console.log(listHistoricalCrypto, "lista de valores de criptomonedas periodo listHistoricalCrypto");
+      arrayHistoricalCurrency = resDate;
+      console.log(
+        arrayHistoricalCurrency,
+        "arrayHistoricalCurrency pepedonjuan"
+      );
+      getGraphic(arrayHistoricalCurrency, arrayHistoricalCrypto);
     });
-  
-  
+}
+
+function getGraphic(cryptos, currencies) {
+  // if (currencies.length > 0 && cryptos.length > 0) {
+  //   console.log(currencies, "list of currencies");
+  //   console.log(cryptos, "list of cryptos criptomoneda");
+
+  //   for (let i = 0; i < cryptos.length; i++) {
+  //     for (let j = 0; j < currencies.length; j++) {
+  //       console.log(
+  //         cryptos[i],
+  //         currencies[j].rates,
+  //         "list of cryptos and currencies"
+  //       );
+  //     }
+  //   }
+  // }
+
+  console.log(currencies, "lista de monedas");
+
+  for (let i = 0; i < cryptos.length; i++) {
+    console.log(cryptos[i], "list of cryptos criptomoneda");
+    const objTimeStapm = new Date(cryptos[i].timestamp);
+    // cryptos[i].timestamp = new Date;
+    const dateCryptoArray = formatDate(objTimeStapm);
+    console.log(dateCryptoArray, "fechas");
+    
+    console.log(currencies[dateCryptoArray], "fechas monedas");
+
+  }
   
 }
 
@@ -173,5 +204,3 @@ function getListAndGraphicalData(data, listHistoricalCrypto, listHistoricalCurre
 // function getGraphicalData(data, listHistoricalCurrency, listHistoricalCrypto) {
 //   console.log(data, "data", listHistoricalCurrency, "listHistoricalCurrency", listHistoricalCrypto, "listHistoricalCrypto");
 // }
-
-
