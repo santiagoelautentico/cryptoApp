@@ -5,16 +5,6 @@ import {
   API_KEY,
 } from "./utils.js";
 
-// .querySelector("#form-convertir")
-//   .addEventListener("submit", (event) => {
-//     event.preventDefault();
-
-//     const datos = {
-//       from: document.querySelector("#sel-moneda-inicial").value,
-//       to: document.querySelector("#sel-moneda-final").value,
-//       amount: document.querySelector("#inp-monto").value,
-//       };
-
 let arrayHistoricalCurrency = [];
 let arrayHistoricalCrypto = [];
 
@@ -144,63 +134,41 @@ function getListAndGraphicalData(data) {
     });
 }
 
+let labelsCoins = [];
+let labelDates = [];
+
 function getGraphic(cryptos, currencies) {
-  // if (currencies.length > 0 && cryptos.length > 0) {
-  //   console.log(currencies, "list of currencies");
-  //   console.log(cryptos, "list of cryptos criptomoneda");
-
-  //   for (let i = 0; i < cryptos.length; i++) {
-  //     for (let j = 0; j < currencies.length; j++) {
-  //       console.log(
-  //         cryptos[i],
-  //         currencies[j].rates,
-  //         "list of cryptos and currencies"
-  //       );
-  //     }
-  //   }
-  // }
-
-  console.log(currencies, "lista de monedas");
+  labelsCoins = [];
+  labelDates = [];
+  var valueOfCrypto = 0;
 
   for (let i = 0; i < cryptos.length; i++) {
-    console.log(cryptos[i], "list of cryptos criptomoneda");
     const objTimeStapm = new Date(cryptos[i].timestamp);
     // cryptos[i].timestamp = new Date;
     const dateCryptoArray = formatDate(objTimeStapm);
-    console.log(dateCryptoArray, "fechas");
-    
-    console.log(currencies[dateCryptoArray], "fechas monedas");
+    if (currencies[dateCryptoArray] !== undefined) {
+      valueOfCrypto = cryptos[i].price / currencies[dateCryptoArray].USD;
+    }
+    labelsCoins.push(valueOfCrypto);
+    labelDates.push(dateCryptoArray);
+    console.log(labelDates, "fechas");
+    console.log(labelsCoins, "labelsCoins");
 
+    new Chartist.LineChart(
+      "#graphic",
+      {
+        labels: labelDates,
+        series: [labelsCoins],
+      },
+      {
+        showArea: true,
+        fullWidth: true,
+        showPoint: false,
+        axisX: {
+          showLabel: false,
+          showGrid: false,
+        },
+      }
+    );
   }
-  
 }
-
-// function rangeHistoricallyUsdToCurrency(data, listHistoricalCurrency) {
-//   const finalDate = calcularFechaFinal(data.date);
-//   fetch(
-//     `https://api.frankfurter.app/${finalDate}..${data.date}?from=${data.from}&to=USD`
-//   )
-//     .then((res) => res.json())
-//     .then((resDate) => {
-//       console.log(resDate.rates, "resDate");
-//       listHistoricalCurrency = resDate.rates;
-//       console.log(listHistoricalCurrency, "next");
-//     });
-// }
-
-// function rageHistoricalCryptoToUsd(data, listHistoricalCrypto) {
-//   console.log(data, "data crypto");
-//   const finalDate = calcularFechaFinal(data.date);
-//   console.log(finalDate, "finalDateCrypto");
-//   fetch(`https://api.coinpaprika.com/v1/tickers/${data.to}/historical?interval=1d&start=${finalDate}&end=${data.date}`)
-//     .then((res) => res.json())
-//     .then((resDate) => {
-//       console.log(resDate, "resDateCrypto");
-//       listHistoricalCrypto = resDate;
-//       console.log(listHistoricalCrypto, "next2");
-//     });
-// }
-
-// function getGraphicalData(data, listHistoricalCurrency, listHistoricalCrypto) {
-//   console.log(data, "data", listHistoricalCurrency, "listHistoricalCurrency", listHistoricalCrypto, "listHistoricalCrypto");
-// }
