@@ -16,14 +16,14 @@
   </head>
   <body>
     <header>
-      <h1>JEEX</h1>
+      <img src="./images/jeex.svg" class="logo" alt="">
       <div class="changeCurrency">
         <i class="fa-solid fa-repeat fa-xl" id="btn-change" style="color: #7a08fa;"></i>
-        <h3>Currency to crypto</h3>
+        <h3 class="status-info">Currency to crypto</h3>
       </div>
     </header>
     <section id="container">
-      <h2 class="title">CONVERT <span class="primary">CURRENCIES</span> TO ANYWHERE <span class="secondary">CRYPTO</span></h2>
+      <h2 class="title"><span class='primary'>Convert Currencies</span> to Cryptocurrencies <span class='secondary'>Anywhere</span></h2>
       <form action="" id="form-convert">
         <div class="input-group">
           <label for="input-convert" id="label-convert" class="label">Enter an amount</label>
@@ -49,7 +49,8 @@
       </form>
       <div class="price-result" id="price-result">
       </div>
-        <div id="graphic"></div>
+        <div id="graphic" class=""></div>
+        <div id="error" class=""></div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/chartist@1.3.0/dist/index.umd.min.js"></script>
     <script src="https://kit.fontawesome.com/e68b49459b.js" crossorigin="anonymous"></script>

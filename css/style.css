@@ -104,3 +104,31 @@ select {
   align-items: center;
   gap: 0.5rem;
 }
+
+.logo{
+  width: 6rem;
+}
+.error_container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 15vh;
+  padding: 0.5rem;
+  background-color: red;
+  gap: 0.5rem;
+  border-radius: 15px;
+  border: rgb(236, 61, 61) solid 5px;
+}
+.error{
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 600;
+  color: white;
+}
+#container{
+  height: 100%;
+}
+.hidden{
+  display: none;
+}

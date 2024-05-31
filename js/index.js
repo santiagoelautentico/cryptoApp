@@ -15,6 +15,16 @@ let status = false;
 
 let timer = "";
 
+function startApp() {
+  getListOfCryptos();
+  addEventForm();
+  eventChange();
+  animation();
+  endAnimation(timer);
+  setDateMax();
+}
+startApp();
+
 function formatDate(dateObj) {
   return dateObj.toISOString().split("T")[0];
 }
@@ -22,8 +32,13 @@ function formatDate(dateObj) {
 function changeStatus() {
   status = !status;
   console.log(status === false ? "currency to crypto" : "crypto to currency");
+  document.querySelector(".status-info").innerHTML =
+    status === false ? "Currency to crypto" : "Crypto to currency";
+  document.querySelector(".title").innerHTML =
+    status === false
+      ? "Convert <span class='primary'>Currencies</span> to Cryptocurrencies <span class='secondary'>Anywhere</span>"
+      : "Convert <span class='primary'>Cryptocurrencies</span> to Currencies <span class='secondary'>Anywhere</span>";
 }
-setDateMax();
 
 function setDateMax() {
   const now = new Date();
@@ -60,12 +75,6 @@ function getListOfCryptos() {
       console.log(error);
     });
 }
-
-getListOfCryptos();
-addEventForm();
-eventChange();
-animation();
-endAnimation(timer);
 
 function addEventForm() {
   document
@@ -171,6 +180,8 @@ function calcularFechaFinal(date) {
   console.log(dateObj, "dateObj");
   return formatDate(dateObj);
 }
+let msjError = document.querySelector("#error")
+let graphic = document.querySelector("#graphic")
 
 function getListCurrencyToCrypto(data) {
   const finalDate = calcularFechaFinal(data.date);
@@ -180,13 +191,21 @@ function getListCurrencyToCrypto(data) {
   )
     .then((res) => res.json())
     .then((resDate) => {
+      msjError.classList.add("hidden")
+      graphic.classList.remove("hidden")
       console.log(resDate.rates, "resDate currency list");
       arrayHistoricalCrypto = resDate.rates;
       getGraphicCurrencyToCrypto(
         arrayHistoricalCrypto,
         arrayHistoricalCurrency
       );
+    }).catch((error) => {
+      console.log(error);
+      graphic.classList.add("hidden")
+      msjError.classList.remove("hidden")
+      msjError.innerHTML = `<div class="error_container"><i class="fa-solid fa-circle-exclamation fa-xl" style="color: #fff;"></i><h2 class="error">We apologize, but the graph is not available for this currency.</h2></div>`
     });
+
   fetch(
     `https://api.coinpaprika.com/v1/tickers/${data.to}/historical?interval=1d&start=${finalDate}&end=${data.date}`
   )
@@ -259,11 +278,12 @@ function getGraphicCurrencyToCrypto(cryptos, currencies) {
 function getGraphicCurrency(currencies) {
   labelsCoins = [];
   labelDates = [];
+  var valueOfCrypto = 0;
   for (const key in currencies) {
-    if (currencies.hasOwnProperty(key)) {
-      labelsCoins.push(key);
-      labelDates.push(currencies[key]);
+    if (currencies[key] !== undefined) {
     }
+    labelsCoins.push(currencies[key].USD);
+    labelDates.push(key);
   }
 
   console.log(labelsCoins, "dates");
