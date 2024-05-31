@@ -3,15 +3,26 @@ import {
   CRYPTO_API_LIST,
   CONVERT_DOLARS_CRYPTO,
   API_KEY,
+  dolars,
+  CONVERT_CRYPTO_DOLARS,
+  CONVERT_GEOAPI,
 } from "./utils.js";
 
 let arrayHistoricalCurrency = [];
 let arrayHistoricalCrypto = [];
 
+let status = false;
+
+let timer = "";
+
 function formatDate(dateObj) {
   return dateObj.toISOString().split("T")[0];
 }
 
+function changeStatus() {
+  status = !status;
+  console.log(status === false ? "currency to crypto" : "crypto to currency");
+}
 setDateMax();
 
 function setDateMax() {
@@ -52,11 +63,33 @@ function getListOfCryptos() {
 
 getListOfCryptos();
 addEventForm();
+eventChange();
+animation();
+endAnimation(timer);
 
 function addEventForm() {
   document
     .querySelector("#form-convert")
     .addEventListener("submit", eventSubmitForm);
+}
+
+function eventChange() {
+  let buttonChange = document.querySelector("#btn-change");
+  buttonChange.addEventListener("click", changeStatus);
+}
+
+function animation() {
+  let buttonChange = document.querySelector("#btn-change");
+  buttonChange.addEventListener("mouseover", (event) => {
+    buttonChange.classList.add("fa-spin");
+  });
+}
+
+function endAnimation() {
+  let buttonChange = document.querySelector("#btn-change");
+  buttonChange.classList.remove("fa-spin");
+  timer = setTimeout(endAnimation, 4000);
+  animation();
 }
 
 function getDateFromForm() {
@@ -71,17 +104,26 @@ function getDateFromForm() {
 function eventSubmitForm(event) {
   event.preventDefault();
   const data = getDateFromForm();
-  convertCurrencyToDolars(data);
-  getListAndGraphicalData(data);
-  getGraphic(data, arrayHistoricalCurrency, arrayHistoricalCrypto);
+  if (status === false) {
+    convertCurrencyToCrypto(data);
+    getListCurrencyToCrypto(data);
+    getGraphicCurrencyToCrypto(
+      data,
+      arrayHistoricalCurrency,
+      arrayHistoricalCrypto
+    );
+  } else {
+    convertCryptoToCurrency(data);
+    getListOfCurrency(data);
+    getGraphicCurrency(data, arrayHistoricalCurrency);
+  }
 }
 
-function convertCurrencyToDolars(data) {
-  fetch(
-    `https://api.getgeoapi.com/v2/currency/convert?${API_KEY}&from=${data.from}&to=USD&amount=${data.amount}`
-  )
+function convertCurrencyToCrypto(data) {
+  fetch(`${CONVERT_GEOAPI}&from=${data.from}&to=USD&amount=${data.amount}`)
     .then((res) => res.json())
     .then((resAmount) => {
+      console.log(resAmount, "amount");
       const convertDolarsToCrypto = {
         quote_currency_id: document.querySelector("#sel-crypto-currency").value,
         amount: resAmount.rates.USD.rate_for_amount,
@@ -91,12 +133,34 @@ function convertCurrencyToDolars(data) {
       )
         .then((res) => res.json())
         .then((crypto_converted) => {
-          document.querySelector("#price-result").innerHTML =
-            crypto_converted.price.toFixed(2);
+          const price = crypto_converted.price.toFixed(5);
+          document.querySelector(
+            "#price-result"
+          ).innerHTML = `<h2 class="result">${data.amount} ${data.from} = <span class="priceCrypto">${price}</span> ${data.to}</h2>`;
         });
     })
     .catch((error) => {
       console.log(error);
+    });
+}
+
+function convertCryptoToCurrency(data) {
+  fetch(
+    `${CONVERT_CRYPTO_DOLARS}${data.to}&quote_currency_id=${dolars}&amount=${data.amount}`
+  )
+    .then((res) => res.json())
+    .then((resCrypto) => {
+      const cryptoPrice = resCrypto.price;
+      console.log(cryptoPrice);
+      fetch(`${CONVERT_GEOAPI}&from=USD&to=${data.from}&amount=${cryptoPrice}`)
+        .then((res) => res.json())
+        .then((resAmount) => {
+          console.log(resAmount, "final amount");
+          const finalPrice = resAmount.rates[data.from].rate_for_amount;
+          document.querySelector(
+            "#price-result"
+          ).innerHTML = `<h2 class="result">${data.amount} ${data.to} = <span class="priceCrypto">${finalPrice}</span> ${data.to}</h2>`;
+        });
     });
 }
 
@@ -108,7 +172,7 @@ function calcularFechaFinal(date) {
   return formatDate(dateObj);
 }
 
-function getListAndGraphicalData(data) {
+function getListCurrencyToCrypto(data) {
   const finalDate = calcularFechaFinal(data.date);
   console.log(finalDate, "finalDate");
   fetch(
@@ -118,7 +182,10 @@ function getListAndGraphicalData(data) {
     .then((resDate) => {
       console.log(resDate.rates, "resDate currency list");
       arrayHistoricalCrypto = resDate.rates;
-      getGraphic(arrayHistoricalCrypto, arrayHistoricalCurrency);
+      getGraphicCurrencyToCrypto(
+        arrayHistoricalCrypto,
+        arrayHistoricalCurrency
+      );
     });
   fetch(
     `https://api.coinpaprika.com/v1/tickers/${data.to}/historical?interval=1d&start=${finalDate}&end=${data.date}`
@@ -130,18 +197,35 @@ function getListAndGraphicalData(data) {
         arrayHistoricalCurrency,
         "arrayHistoricalCurrency pepedonjuan"
       );
-      getGraphic(arrayHistoricalCurrency, arrayHistoricalCrypto);
+      getGraphicCurrencyToCrypto(
+        arrayHistoricalCurrency,
+        arrayHistoricalCrypto
+      );
+    });
+}
+
+function getListOfCurrency(data) {
+  const finalDate = calcularFechaFinal(data.date);
+  console.log(finalDate, "finalDate");
+  fetch(
+    `https://api.frankfurter.app/${finalDate}..${data.date}?from=${data.from}&to=USD`
+  )
+    .then((res) => res.json())
+    .then((resDate) => {
+      console.log(resDate.rates, "resDate currency list");
+      arrayHistoricalCurrency = resDate.rates;
+      getGraphicCurrency(arrayHistoricalCurrency);
     });
 }
 
 let labelsCoins = [];
 let labelDates = [];
 
-function getGraphic(cryptos, currencies) {
+function getGraphicCurrencyToCrypto(cryptos, currencies) {
   labelsCoins = [];
   labelDates = [];
   var valueOfCrypto = 0;
-
+  console.log(cryptos, "cryptos");
   for (let i = 0; i < cryptos.length; i++) {
     const objTimeStapm = new Date(cryptos[i].timestamp);
     // cryptos[i].timestamp = new Date;
@@ -171,4 +255,34 @@ function getGraphic(cryptos, currencies) {
       }
     );
   }
+}
+function getGraphicCurrency(currencies) {
+  labelsCoins = [];
+  labelDates = [];
+  for (const key in currencies) {
+    if (currencies.hasOwnProperty(key)) {
+      labelsCoins.push(key);
+      labelDates.push(currencies[key]);
+    }
+  }
+
+  console.log(labelsCoins, "dates");
+  console.log(labelDates, "labels");
+
+  new Chartist.LineChart(
+    "#graphic",
+    {
+      labels: labelDates,
+      series: [labelsCoins],
+    },
+    {
+      showArea: true,
+      fullWidth: true,
+      showPoint: false,
+      axisX: {
+        showLabel: false,
+        showGrid: false,
+      },
+    }
+  );
 }

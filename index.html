@@ -4,22 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/chartist@1.3.0/dist/index.min.css"
     />
+    
     <title>JEEX</title>
   </head>
   <body>
     <header>
-      <img src="./images/jeex.svg" title="JEEX" type="image/svg+xml" alt="JEEX" class="logoHeader">
+      <h1>JEEX</h1>
+      <div class="changeCurrency">
+        <i class="fa-solid fa-repeat fa-xl" id="btn-change" style="color: #7a08fa;"></i>
+        <h3>Currency to crypto</h3>
+      </div>
     </header>
     <section id="container">
-      <h2 class="title">Conversor of coins</h2>
+      <h2 class="title">CONVERT <span class="primary">CURRENCIES</span> TO ANYWHERE <span class="secondary">CRYPTO</span></h2>
       <form action="" id="form-convert">
         <div class="input-group">
           <label for="input-convert" id="label-convert" class="label">Enter an amount</label>
-          <input type="number" required id="input-convert" class="input" />
+          <input type="number" required id="input-convert" class="input" placeholder="Ex: 100" />
         </div>
         <div class="input-group">
           <label for="currency-convert" id="label-inicial-currency" class="label">Traditional Currency</label>
@@ -29,7 +37,9 @@
         </div>
         <div class="input-group">
           <label for="currency-convert" id="label-final-currency" class="label">Crypto currency</label>
-          <select id="sel-crypto-currency" class="input" aria-label="Default select example" required></select>
+          <select id="sel-crypto-currency" class="input" aria-label="Default select example" required>
+            <option value="" selected disabled hidden>Choose a Crypto</option>
+          </select>
         </div>
         <div class="input-group">
           <label for="currency-convert" id="date-convert" class="label">Enter a date</label>
@@ -37,12 +47,12 @@
         </div>
         <button class="btn btn-primary" id="btn-convert">Convert</button>
       </form>
-      <div class="price_container">
-        <h2 id="price-result" class="price"></h2>
-        <div id="graphic"></div>
+      <div class="price-result" id="price-result">
       </div>
+        <div id="graphic"></div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/chartist@1.3.0/dist/index.umd.min.js"></script>
+    <script src="https://kit.fontawesome.com/e68b49459b.js" crossorigin="anonymous"></script>
     <script src="./js/index.js" type="module"></script>
   </body>
 </html>
